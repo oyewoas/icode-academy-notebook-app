@@ -183,6 +183,7 @@ const start = () => {
 
 }
 
+
 updateNoteButton.addEventListener('click', updateNoteFunction)
 
 //Initialize Application
