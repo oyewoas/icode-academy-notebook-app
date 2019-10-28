@@ -1,0 +1,109 @@
+.navbar{
+    background-color: white;
+}
+
+.nav-link{
+    color: black;
+    margin-right: 10px;
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+.notes-header{
+    color: #1E88E5;
+    text-decoration: underline;
+}
+
+.btn-new-note{
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 8px 30px;
+    background-color: #1E88E5;
+}
+
+#btn-add-note{
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 5px 30px;
+    background-color: #1E88E5;
+    cursor: pointer;
+}
+
+#btn-update-note{
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 5px 30px;
+    background-color: #1E88E5;
+    cursor: pointer;
+}
+
+
+
+#invalid-input {
+    color: red;
+    text-align: center;
+    font-weight: bold
+}
+
+.btn-form{
+    float: right;
+}
+
+.jumbotron{
+    background-color: white;
+}
+
+.note-collection{
+    list-style-type: none;
+    cursor: pointer;
+}
+
+.note-collection:hover{
+    opacity: 0.8;
+}
+
+.btn-edit{
+    color: #1E88E5;
+    cursor: pointer;
+
+}
+
+
+.btn-delete{
+    color:red;
+    cursor: pointer;
+    
+}
+
+.btn-view{
+    color:orange;
+    cursor: pointer;
+}
+
+.btn-back{
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 5px 30px;
+    background-color: #1E88E5;
+    cursor: pointer;
+}
+
+.btn-details{
+    border: none;
+    color: #1E88E5;
+    font-weight: bolder;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn-back:hover{
+    color: white;
+}
