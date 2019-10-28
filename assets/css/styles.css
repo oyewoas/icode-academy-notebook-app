@@ -96,6 +96,14 @@
     cursor: pointer;
 }
 
+.btn-details{
+    border: none;
+    color: #1E88E5;
+    font-weight: bolder;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 .btn-back:hover{
     color: white;
 }
