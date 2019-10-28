@@ -23,7 +23,7 @@
     background-color: #1E88E5;
 }
 
-.btn-add-note{
+#btn-add-note{
     border: none;
     color: white;
     font-size: 16px;
@@ -31,6 +31,24 @@
     padding: 5px 30px;
     background-color: #1E88E5;
     cursor: pointer;
+}
+
+#btn-update-note{
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 5px 30px;
+    background-color: #1E88E5;
+    cursor: pointer;
+}
+
+
+
+#invalid-input {
+    color: red;
+    text-align: center;
+    font-weight: bold
 }
 
 .btn-form{
@@ -61,4 +79,23 @@
     color:red;
     cursor: pointer;
     
+}
+
+.btn-view{
+    color:orange;
+    cursor: pointer;
+}
+
+.btn-back{
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 5px 30px;
+    background-color: #1E88E5;
+    cursor: pointer;
+}
+
+.btn-back:hover{
+    color: white;
 }

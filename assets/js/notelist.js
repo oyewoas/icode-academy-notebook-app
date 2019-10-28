@@ -1,279 +1,193 @@
-// Storage Controller
-const StorageCtrl = (function() {
-    // Public methods
-    return {
-      storeNote: (note) => {
-        let notes;
-        // Check if notes is in ls
-        if(localStorage.getItem('notes') === null){
-          notes = [];
-          // Push new note
-          notes.push(note);
-          // Set ls
-          localStorage.setItem('notes', JSON.stringify(notes));
-        } else {
-          // Get what is already in ls
-          notes = JSON.parse(localStorage.getItem('notes'));
+const UI_SELECTORS = {
+  deleteNoteBtn: '.btn-delete',
+  noteViewBtn: '.btn-view',
+  editNoteBtn: '.btn-edit',
+  titleInput: '#note-title',
+  informationInput: '#note-information',
+  savedNotesList: '#saved-notes',
+  invalidInput: '#invalid-input',
+  noNote: '#no-note',
+  updateNoteForm: '#update-note',
+  notesHeader: '.notes-header',
+  updateNoteButton: '#btn-update-note',
+  noteView: '#note-view'
+
+}
+
+const savedNotesList = document.querySelector(UI_SELECTORS.savedNotesList)
+const noNote = document.querySelector(UI_SELECTORS.noNote)
+const titleInput = document.querySelector(UI_SELECTORS.titleInput)
+const informationInput = document.querySelector(UI_SELECTORS.informationInput)
+const updateNoteForm = document.querySelector(UI_SELECTORS.updateNoteForm)
+const notesHeader = document.querySelector(UI_SELECTORS.notesHeader)
+const invalidInput = document.querySelector(UI_SELECTORS.invalidInput)
+const updateNoteButton = document.querySelector(UI_SELECTORS.updateNoteButton)
+const noteView = document.querySelector(UI_SELECTORS.noteView)
+
+const checkIfValidInput = (title, information) => {
+  if (title !== '' && information !== '') {
+      return true
+  } else {
+      const message = 'Inputs cannot be empty'
+      invalidInput.textContent = message
+      return false
+  }
+
+}
+
+
+const savedNotes = (id, title, information) => {
+  savedNotesList.innerHTML += `
+  <div id='note-${id}' class='col-sm-4'>
+    <div class='mt-3 mb-3 card' >
+    <span class="pt-2 pr-3 text-right"> <span class="btn-edit " title="Edit Note"><i class="far fa-edit mr-1" ></i></span> <span class="btn-delete" title="Delete Note"><i  class="ml-1 far fa-trash-alt"></i></span> <span title="View Note" class="btn-view"><i class="ml-1 far fa-eye"></i></span> </span>
+      <div class='card-body'>
+        <h5 class="card-title">${title}</h5>
+        <p class="card-text">${information}</p>
+      </div>
+    </div> 
+  </div>`
+}
+
+const noteViews = (id, title, information) => {
+  noteView.innerHTML = `
+  <div id='note-${id}' class='col-sm-12'>
+    <a class="btn-back" href="/notelist.html">Go Back</a>
+    <div class='mt-3 mb-3 card' >
+      <div class='card-body'>
+        <h2 class="card-title">${title}</h2>
+        <p class="card-text">${information}</p>
+      </div>
+    </div> 
+  </div>`
+}
+
+const getNotesFromStorage = () => {
+  let notes;
+  if (localStorage.getItem('notes') === null) {
+    notes = [];
+  } else {
+    notes = JSON.parse(localStorage.getItem('notes'));
+  }
+  return notes;
+
+}
+
+
+
+const deleteNoteFunction = (e) => {
+  let notes = getNotesFromStorage()
+  const currentNote = e.target.parentNode.parentNode.parentNode.parentNode  
+  const currentNoteId = currentNote.getAttribute('id')
   
-          // Push new note
-          notes.push(note);
-  
-          // Re set ls
-          localStorage.setItem('notes', JSON.stringify(notes));
-        }
-      },
-      getNotesFromStorage: function() {
-        let notes;
-        if(localStorage.getItem('notes') === null){
-          notes = [];
-        } else {
-          notes = JSON.parse(localStorage.getItem('notes'));
-        }
-        return notes;
-      },
-      updateNoteInStorage: (updatednote) => {
-        let notes = JSON.parse(localStorage.getItem('notes'));
-  
-        notes.forEach((note, index) => {
-          if(updatedNote.id === note.id){
-            notes.splice(index, 1, updatednote);
-          }
-        });
-        localStorage.setItem('notes', JSON.stringify(notes));
-      },
-      deleteNoteFromStorage: (id) => {
-        let notes = JSON.parse(localStorage.getItem('notes'));
-  
-        notes.forEach((note, index) => {
-          if(id === note.id){
-            notes.splice(index, 1);
-          }
-        });
-        localStorage.setItem('notes', JSON.stringify(notes));
-      },
-      clearNotesFromStorage: function() {
-        localStorage.removeItem('notes');
+  notes.forEach((note, index) => {
+    const {id} = note
+    if (`note-${id}` === currentNoteId){
+      currentNote.remove()
+      notes.splice(index, 1)
+      if (notes[0] === undefined){
+        noNote.textContent = 'Notes not added yet'
       }
+      localStorage.setItem('notes', JSON.stringify(notes))
     }
-  })();
+  })
+}
 
-
-  // Note Controller
-const NoteCtrl = (function() {
-    // Item Constructor
-    const Note = function(id, title, information){
-      this.id = id;
-      this.title = title;
-      this.information = information;
+const updateNote = (noteId, updatedTitle, updatedInformation) => {
+  let notes = getNotesFromStorage()
+  notes.forEach((note) => {
+    let {id} = note
+    if(id === Number(noteId)){
+      note.title = updatedTitle;
+      note.information = updatedInformation
     }
-  
-    // Data Structure / State
-    const data = {
-      notes: StorageCtrl.getNotesFromStorage(),
-      currentNote: null
-    }
-  
-    // Public methods
-    return {
-      getNotes: function() {
-        return data.notes;
-      },
-      
-      addNote: (title, information) => {
-        let ID;
-        // Create ID
-        if(data.notes.length > 0){
-          ID = data.notes[data.notes.length - 1].id + 1;
-        } else {
-          ID = 0;
-        }
-  
-        // Create new note
-        newNote = new Note(ID, title, information);
-  
-        // Add to notes array
-        data.notes.push(newNote);
-  
-        return newNote;
-      },
-      getNoteById: (id) => {
-        let noteFound = null;
-        // Loop through notes
-        data.notes.forEach((note) => {
-          if(note.id === id){
-            found = note;
-          }
-        });
-        return noteFound;
-      },
-      updateNote: (title, information) => {
-        let noteFound = null;
-  
-        data.notes.forEach((note) => {
-          if(note.id === data.currentNote.id){
-            note.title = title;
-            note.information = information;
-            noteFound = note;
-          }
-        });
-        return noteFound;
-      },
-      deleteNote: (id) => {
-        // Get ids
-        const ids = data.notes.map((note) => {
-          return note.id;
-        });
-  
-        // Get index
-        const index = ids.indexOf(id);
-  
-        // Remove note
-        data.notes.splice(index, 1);
-      },
-      clearAllNotes: function() {
-        data.notes = [];
-      },
-      setCurrentNote: (note) => {
-        data.currentNote = note;
-      },
-      getCurrentNote: function() {
-        return data.currentNote;
-      },
-      logData: function() {
-        return data;
-      }
-    }
-  })();
-  
-  
-
-
-
-  // UI Controller
-const UICtrl = (function(){
-    const UISelectors = {
-      savedNotes: '#saved-notes',
-      notesList: '#saved-notes li',
-      addNoteBtn: '.btn-add-note',
-      updateBtn: '.update-btn',
-      deleteBtn: '.delete-btn',
-      backBtn: '.back-btn',
-      clearBtn: '.clear-btn',
-      noteTitleInput: '#note-title',
-      noteInformationInput: '#note-information',
-    }
-  
-    // Public methods
-    return {
-      populateSavedNotes: (notes) => {
-        let html = '';
-  
-        notes.forEach((note) => {
-          html += `<li class="note-collection" id="note-${note.id}">
-          <h3>${note.title} <span class="pl-5 btn-edit"><i class="fas fa-edit"></i></span> <span class="pl-5 btn-delete"><i class="fas fa-trash-alt"></i></span> </h3> 
-        </li>  `;
-        });
-  
-        // Insert list items
-        document.querySelector(UISelectors.savedNotes).innerHTML = html;
-      },
-      getNoteInput: function() {
-        return {
-          title:document.querySelector(UISelectors.noteTitleInput).value,
-          information:document.querySelector(UISelectors.noteInformationInput).value
-        }
-      },
-
-      updateNote: function(note) {
-        let notesList = document.querySelectorAll(UISelectors.notesList);
-  
-        // Turn Node list into array
-        notesList = Array.from(notesList);
-  
-        notesList.forEach((theNote) => {
-          const noteID = theNote.getAttribute('id');
-  
-          if(noteID === `note-${note.id}`){
-            document.querySelector(`#${noteID}`).innerHTML = `<h3>${theNote.title}: </h3> `;
-          }
-        });
-      },
-      deleteNote: function (id) {
-        const noteID = `#note-${id}`;
-        const note = document.querySelector(noteID);
-        note.remove();
-      },
-      removeNotes: function () {
-        let notes = document.querySelectorAll(UISelectors.notesList);
-  
-        // Turn Node list into array
-        notes = Array.from(notes);
-  
-        listItems.forEach(function (note) {
-          note.remove();
-        });
-      },
-      
-      hideNotes: function() {
-        document.querySelector(UISelectors.savedNotes).style.display = 'none';
-      },
-      clearEditState: function () {
-        // document.querySelector(UISelectors.updateBtn).style.display = 'none';
-        // document.querySelector(UISelectors.deleteBtn).style.display = 'none';
-        // document.querySelector(UISelectors.backBtn).style.display = 'none';
-        // document.querySelector(UISelectors.addNoteBtn).style.display = 'inline';
-      },
-      getSelectors: function() {
-        return UISelectors;
-      }
-    }
-  })();
-  
-  
-  
-  // App Controller
-  const App = ( function(NoteCtrl, StorageCtrl, UICtrl) {
-    // Load event listeners
-    const loadEventListeners = function() {
-      // Get UI selectors
-      const UISelectors = UICtrl.getSelectors();
-  
-      // Disable submit on enter
-      document.addEventListener('keypress', function(e){
-        if(e.keyCode === 13 || e.which === 13){
-          e.preventDefault();
-          return false;
-        }
-      });
-  
-      // Edit icon click event
-  
-    }
-  
     
-    // Public methods
-    return {
-      init: function(){
-        // Clear edit state / set initial set
-        UICtrl.clearEditState();
-  
-        // Fetch items from data structure
-        const notes = NoteCtrl.getNotes();
-  
-        // Check if any items
-        if(notes.length === 0){
-          UICtrl.hideNotes();
-        } else {
-          // Populate list with items
-          UICtrl.populateSavedNotes(notes);
-        }
-        // Load event listeners
-        loadEventListeners();
-      }
+  })
+
+  localStorage.setItem('notes', JSON.stringify(notes))
+}
+
+const updateNoteFunction = () => {
+  const noteId = localStorage.getItem('currentNoteId')
+  const isValidInput = checkIfValidInput(titleInput.value, informationInput.value)
+  if(isValidInput){
+    updateNote(noteId, titleInput.value, informationInput.value)
+    localStorage.removeItem('currentNoteId')
+    updateNoteForm.classList.add('d-none')
+    notesHeader.textContent = 'My Notes'
+    location.reload()
+  }
+}
+
+const noteViewFunction = (e) => {
+  let notes = getNotesFromStorage()
+  const currentNote = e.target.parentNode.parentNode.parentNode.parentNode  
+  const currentNoteId = currentNote.getAttribute('id')  
+  notes.forEach((note) => {
+    const {id, title, information} = note
+    if (`note-${id}` === currentNoteId){
+      savedNotesList.classList.add('d-none')
+      notesHeader.textContent = 'My Note'
+      noteViews(id, title, information)
     }
+  })
+}
+
+const editNoteFunction = (e) => {
+  let notes = getNotesFromStorage()
+  const currentNote = e.target.parentNode.parentNode.parentNode.parentNode  
+  const currentNoteId = currentNote.getAttribute('id')  
+  notes.forEach((note) => {
+    const {id, title, information} = note
+    if (`note-${id}` === currentNoteId){
+      savedNotesList.classList.add('d-none')
+      updateNoteForm.classList.remove('d-none')
+      notesHeader.textContent = 'Edit Note'
+      titleInput.value = title;
+      informationInput.value = information
+      localStorage.setItem('currentNoteId', id)
+    }
+  })
+}
+
+
+const addEventListenerToButton = (elements, neededFunction) => {
+  elements.forEach((element) => {
+    element.addEventListener('click', (e) => {
+      e.stopPropagation();
+      neededFunction(e)
+    })
+  })
   
-  })(NoteCtrl, StorageCtrl, UICtrl);
-  
-  // Initialize App
-  App.init();
-  
+}
+
+const start = () => {
+  let notes = getNotesFromStorage()
+  if (!notes || notes[0] === undefined) {
+    noNote.textContent = 'Notes not added yet'
+  }
+  notes.forEach((note) => {
+    const {id, title, information} = note
+    savedNotes(id, title, information)
+    
+  })
+ 
+ const deleteNoteButton = document.querySelectorAll(UI_SELECTORS.deleteNoteBtn) 
+ const editNoteButton = document.querySelectorAll(UI_SELECTORS.editNoteBtn)
+ const noteViewButton = document.querySelectorAll(UI_SELECTORS.noteViewBtn)
+
+
+ addEventListenerToButton(deleteNoteButton, deleteNoteFunction)
+ addEventListenerToButton(editNoteButton, editNoteFunction)
+ addEventListenerToButton(noteViewButton, noteViewFunction)
+
+}
+
+updateNoteButton.addEventListener('click', updateNoteFunction)
+
+//Initialize Application
+const APP = {
+  start: (start)(),
+}
+
+APP.start;

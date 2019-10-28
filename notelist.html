@@ -24,7 +24,7 @@
             <div class="collapse navbar-collapse " id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item active">
-                        <a class="nav-link " href="#"> <span class="btn-new-note">New Note</span> </a>
+                        <a class="nav-link " href="/index.html"> <span class="btn-new-note">New Note</span> </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
@@ -37,13 +37,50 @@
     <section class="container">
         <div class="row pt-5">
             <div class="col-sm-12 pt-5">
-                <h2 class="notes-header">
-                    My Saved Notes
+                <h2 class="notes-header text-center">
+                    My Notes
                     </h2>
-                    <ul class="saved-notes pt-5" id="saved-notes">
-
-                    </ul>
+                    
             </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                    <h4 id="no-note"></h4>
+
+            </div>
+        </div>
+
+        <div class="row" id="saved-notes">
+        </div>
+
+        <div class="row" id="note-view"></div>
+
+        <div class="row d-none" id="update-note">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <a class="btn-back" href="/notelist.html">Go Back</a>
+
+                    <p id="invalid-input"></p>
+                    <form >
+                        <div class="form-group">
+                            <label class="d-none" for="title">Title</label>
+                            <input type="text" class="form-control" id="note-title" placeholder="Title">
+                        </div>
+                        <div class="form-group">
+                            <label class="d-none" for="information">Information</label>
+                            <textarea class="form-control" id="note-information" rows="5"
+                                placeholder="Information"></textarea>
+                        </div>
+                        <div class="btn-form">
+                            <span id="btn-update-note">Update Note</span>
+
+                        </div>
+                    </form>
+            </div>
+            
+            <div class="col-sm-2"></div>
+
         </div>
 
     </section>
