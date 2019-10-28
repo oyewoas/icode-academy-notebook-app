@@ -47,7 +47,6 @@ const savedNotes = (id, title, information) => {
     savedNotesList.innerHTML += `
     <div id='note-${id}' class='col-sm-4'>
       <div class='mt-3 mb-3 card' >
-        <span class="pt-2 pr-3 text-right"> <span class="btn-edit " title="Edit Note"><i class="far fa-edit mr-1" ></i></span> <span class="btn-delete" title="Delete Note"><i  class="ml-1 far fa-trash-alt"></i></span> </span>
         <div class='card-body'>
           <h5 class="card-title">${title}</h5>
           <p class="card-text">${information}</p>
