@@ -129,8 +129,10 @@ const noteViewFunction = (e) => {
       savedNotesList.classList.add('d-none')
       notesHeader.textContent = 'My Note'
       noteViews(id, title, information)
+      
     }
   })
+
 }
 
 const editNoteFunction = (e) => {
