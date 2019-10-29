@@ -46,9 +46,9 @@ const eachNote = (id, title, information) => {
 const savedNotes = (id, title, information) => {
     savedNotesList.innerHTML += `
     <div id='note-${id}' class='col-sm-4'>
-      <div class='mt-3 mb-3 card' >
+      <div class='mt-3 mb-3 shadow card' >
         <div class='card-body'>
-          <h5 class="card-title">${title}</h5>
+          <h4 class="card-title">${title}</h4>
           <p class="card-text">${information}</p>
         </div>
       </div> 
@@ -70,6 +70,8 @@ const clearFields = () => {
     titleInput.value = ''
     informationInput.value = ''
     noNote.textContent = ''
+    invalidInput.textContent = ''
+
 }
 
 const addNoteFunction = () => {

@@ -1,3 +1,7 @@
+body{
+    font-family: Montserrat, 'Poppins';
+}
+
 .navbar{
     background-color: white;
 }
@@ -104,6 +108,20 @@
     border-radius: 5px;
     cursor: pointer;
 }
+
+.btn-love{
+    color: red;
+}
+
+.footer-text{
+    color: #1E88E5;
+    font-weight: 300;
+    font-size: 18px;
+}
 .btn-back:hover{
     color: white;
+}
+
+.fa-bars{
+    color: #1E88E5;
 }

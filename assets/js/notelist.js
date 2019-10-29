@@ -39,10 +39,10 @@ const checkIfValidInput = (title, information) => {
 const savedNotes = (id, title, information) => {
   savedNotesList.innerHTML += `
   <div id='note-${id}' class='col-sm-4'>
-    <div class='mt-3 mb-3 card' >
+    <div class='mt-3 mb-3 shadow card' >
     <span class="pt-2 pr-3 text-right"> <span class="btn-edit " title="Edit Note"><i class="far fa-edit mr-1" ></i></span> <span class="btn-delete" title="Delete Note"><i  class="ml-1 far fa-trash-alt"></i></span> <span title="View Note" class="btn-view"><i class="ml-1 far fa-eye"></i></span> </span>
       <div class='card-body'>
-        <h5 class="card-title">${title}</h5>
+        <h4 class="card-title">${title}</h4>
         <p class="card-text">${information}</p>
       </div>
     </div> 
@@ -51,9 +51,9 @@ const savedNotes = (id, title, information) => {
 
 const noteViews = (id, title, information) => {
   noteView.innerHTML = `
-  <div id='note-${id}' class='col-sm-12'>
+  <div id='note-${id}' class='col-sm-12 '>
     <a class="btn-back" href="/notelist.html">Go Back</a>
-    <div class='mt-3 mb-3 card' >
+    <div class='mt-3 mb-3 card shadow' >
       <div class='card-body'>
         <h2 class="card-title">${title}</h2>
         <p class="card-text">${information}</p>
