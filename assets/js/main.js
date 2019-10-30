@@ -14,7 +14,9 @@ const UI_SELECTORS = {
     noteView: '#note-view',
     mainSection: '#main-section',
     detailsBtn: '.btn-details',
-    mainText: '#main-text'
+    mainText: '#main-text',
+    cardColor: '#card-color',
+    noteCard: '.card'
 }
 
 const titleInput = document.querySelector(UI_SELECTORS.titleInput)
@@ -30,12 +32,12 @@ const noteView = document.querySelector(UI_SELECTORS.noteView)
 const mainSection = document.querySelector(UI_SELECTORS.mainSection)
 const noteDetailsButton = document.querySelector(UI_SELECTORS.detailsBtn)
 const mainText = document.querySelector(UI_SELECTORS.mainText)
-
+const cardColor = document.querySelector(UI_SELECTORS.cardColor)
 
 
 //Validation FUnction
-const checkIfValidInput = (title, information) => {
-    if (title !== '' && information !== '') {
+const checkIfValidInput = (title, information, color) => {
+    if (title !== '' && information !== '' && color !== '') {
         return true
     } else {
         const message = 'Inputs cannot be empty'
@@ -47,25 +49,27 @@ const checkIfValidInput = (title, information) => {
 
 
 //Controller Functions
-const eachNote = (id, title, information) => {
+const eachNote = (id, title, information, color) => {
     let note;
-    const isValidInput = checkIfValidInput(title, information)
+    const isValidInput = checkIfValidInput(title, information, color)
 
     if (isValidInput) {
         note = {
             id,
             title,
-            information
+            information,
+            color
         }
     }
     return note
 
 }
 
-const savedNotes = (id, title, information) => {
+const savedNotes = (id, title, information, color) => {
+
     savedNotesList.innerHTML += `
-    <div id='note-${id}' class='col-sm-4'>
-      <div class='mt-3 mb-3 shadow card' >
+    <div id='note-${id}' class=' col-sm-4'>
+      <div class='mt-3 mb-3 ${color} shadow card' >
       <span class="pt-2 pr-3 text-right"> <span class="btn-edit " title="Edit Note"><i class="far fa-edit mr-1" ></i></span> <span class="btn-delete" title="Delete Note"><i  class="ml-1 far fa-trash-alt"></i></span> <span title="View Note" class="btn-view"><i class="ml-1 far fa-eye"></i></span> </span>
         <div class='card-body'>
           <h4 class="card-title">${title}</h4>
@@ -75,11 +79,11 @@ const savedNotes = (id, title, information) => {
     </div>`
 }
 
-const noteViews = (id, title, information) => {
+const noteViews = (id, title, information, color) => {
     noteView.innerHTML = `
-    <div id='note-${id}' class='col-sm-12 '>
+    <div id='note-${id}' class=' col-sm-12 '>
       <a class="btn-back" href="index.html">Go Back</a>
-      <div class='mt-3 mb-3 card shadow' >
+      <div class='mt-3 mb-3 ${color} card shadow' >
         <div class='card-body'>
           <h2 class="card-title">${title}</h2>
           <p class="card-text">${information}</p>
@@ -118,7 +122,7 @@ const deleteNoteFunction = (e) => {
     })
 }
 
-const updateNote = (noteId, updatedTitle, updatedInformation) => {
+const updateNote = (noteId, updatedTitle, updatedInformation, updatedColor) => {
     let notes = getNotesFromStorage()
     notes.forEach((note) => {
         let {
@@ -127,6 +131,7 @@ const updateNote = (noteId, updatedTitle, updatedInformation) => {
         if (id === Number(noteId)) {
             note.title = updatedTitle;
             note.information = updatedInformation
+            note.color = updatedColor
         }
 
     })
@@ -136,9 +141,9 @@ const updateNote = (noteId, updatedTitle, updatedInformation) => {
 
 const updateNoteFunction = () => {
     const noteId = localStorage.getItem('currentNoteId')
-    const isValidInput = checkIfValidInput(titleInput.value, informationInput.value)
+    const isValidInput = checkIfValidInput(titleInput.value, informationInput.value, cardColor.value)
     if (isValidInput) {
-        updateNote(noteId, titleInput.value, informationInput.value)
+        updateNote(noteId, titleInput.value, informationInput.value, cardColor.value)
         localStorage.removeItem('currentNoteId')
         notesHeader.textContent = 'My Notes'
         location.reload()
@@ -153,7 +158,8 @@ const noteViewFunction = (e) => {
         const {
             id,
             title,
-            information
+            information,
+            color
         } = note
         if (`note-${id}` === currentNoteId) {
             savedNotesList.classList.add('d-none')
@@ -161,7 +167,7 @@ const noteViewFunction = (e) => {
             noteDetailsButton.classList.add('d-none')
 
             notesHeader.textContent = 'My Note'
-            noteViews(id, title, information)
+            noteViews(id, title, information, color)
 
         }
     })
@@ -176,7 +182,8 @@ const editNoteFunction = (e) => {
         const {
             id,
             title,
-            information
+            information,
+            color
         } = note
         if (`note-${id}` === currentNoteId) {
             savedNotesList.classList.add('d-none')
@@ -187,6 +194,7 @@ const editNoteFunction = (e) => {
             notesHeader.textContent = ''
             titleInput.value = title;
             informationInput.value = information
+            cardColor.value = color
             localStorage.setItem('currentNoteId', id)
         }
     })
@@ -213,6 +221,7 @@ const clearFields = () => {
 }
 
 const addNoteFunction = () => {
+
     let ID;
     let notes = getNotesFromStorage()
     if (notes.length > 0) {
@@ -221,12 +230,12 @@ const addNoteFunction = () => {
         ID = 0;
     }
 
-    const note = eachNote(ID, titleInput.value, informationInput.value)
+    const note = eachNote(ID, titleInput.value, informationInput.value, cardColor.value)
 
     if (note !== undefined) {
         notes.push(note)
         localStorage.setItem('notes', JSON.stringify(notes))
-        savedNotes(note.id, note.title, note.information)
+        savedNotes(note.id, note.title, note.information, note.color)
         clearFields()
         location.reload()
 
@@ -244,16 +253,16 @@ const start = () => {
         const {
             id,
             title,
-            information
+            information,
+            color
         } = note
-        savedNotes(id, title, information)
+        savedNotes(id, title, information, color)
 
     })
 
     const deleteNoteButton = document.querySelectorAll(UI_SELECTORS.deleteNoteBtn)
     const editNoteButton = document.querySelectorAll(UI_SELECTORS.editNoteBtn)
     const noteViewButton = document.querySelectorAll(UI_SELECTORS.noteViewBtn)
-
 
     addEventListenerToButton(deleteNoteButton, deleteNoteFunction)
     addEventListenerToButton(editNoteButton, editNoteFunction)

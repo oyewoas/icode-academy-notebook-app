@@ -86,7 +86,7 @@ body{
 }
 
 .btn-view{
-    color:orange;
+    color: black;
     cursor: pointer;
 }
 
@@ -124,4 +124,31 @@ body{
 
 .fa-bars{
     color: #1E88E5;
+}
+
+.red{
+    background-color: red;
+    color: white;
+}
+.blue{
+    background-color: blue;
+    color: white;
+}
+.orange{
+    background-color: orange;
+    color: white;
+}
+.pink{
+    background-color: pink;
+    color: rgb(70, 65, 65);
+}
+
+.purple{
+    background-color: purple;
+    color: white;
+}
+
+.green{
+    background-color: green;
+    color: white;
 }
