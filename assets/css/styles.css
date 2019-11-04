@@ -1,3 +1,7 @@
+body{
+    font-family: Montserrat, 'Poppins';
+}
+
 .navbar{
     background-color: white;
 }
@@ -82,7 +86,7 @@
 }
 
 .btn-view{
-    color:orange;
+    color: black;
     cursor: pointer;
 }
 
@@ -104,6 +108,47 @@
     border-radius: 5px;
     cursor: pointer;
 }
+
+.btn-love{
+    color: red;
+}
+
+.footer-text{
+    color: #1E88E5;
+    font-weight: 300;
+    font-size: 18px;
+}
 .btn-back:hover{
+    color: white;
+}
+
+.fa-bars{
+    color: #1E88E5;
+}
+
+.red{
+    background-color: red;
+    color: white;
+}
+.blue{
+    background-color: blue;
+    color: white;
+}
+.orange{
+    background-color: orange;
+    color: white;
+}
+.pink{
+    background-color: pink;
+    color: rgb(70, 65, 65);
+}
+
+.purple{
+    background-color: purple;
+    color: white;
+}
+
+.green{
+    background-color: green;
     color: white;
 }
